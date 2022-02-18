@@ -24,14 +24,14 @@ public class Empresa implements Serializable {
 	private Long id;
 	private String nome;
 	private String cnpj;
-	private Boolean aberta;
+	private Boolean aberta = true;
 
 	public Empresa() {
 	}
-
-	public Empresa(Long id, String nome) {
-		this.id = id;
+	
+	public Empresa(String nome, String cnpj) {
 		this.nome = nome;
+		this.cnpj = cnpj;
 	}
 
 	public Long getid() {

@@ -18,12 +18,8 @@ public class EmpresaDto {
 		return id;
 	}
 
-
 	public String getNome() {
 		return nome;
 	}
-	
-	
-	
 	
 }

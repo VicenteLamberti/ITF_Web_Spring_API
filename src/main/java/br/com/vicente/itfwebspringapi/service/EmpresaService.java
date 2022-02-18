@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.vicente.itfwebspringapi.dto.EmpresaDto;
+import br.com.vicente.itfwebspringapi.form.EmpresaForm;
 import br.com.vicente.itfwebspringapi.model.Empresa;
 import br.com.vicente.itfwebspringapi.repository.EmpresaRepository;
 
@@ -23,6 +24,12 @@ public class EmpresaService {
 		return empresas.stream().map(EmpresaDto::new).collect(Collectors.toList());
 	}
 	
+	public Empresa converterParaEmpresa(EmpresaForm empresaForm) {
+		
+		Empresa empresa = new Empresa(empresaForm.getNome(),empresaForm.getCnpj());
+		return empresa;
+	}
+	
 	
 	public List<Empresa> buscar(){
 		return empresaRepository.findAll();
@@ -31,6 +38,11 @@ public class EmpresaService {
 	public Empresa buscarPorId(Long id) {
 		Optional<Empresa> obj = empresaRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Empresa.class.getName(),null));
+	}
+	
+	public void salvar(Empresa empresa) {
+		empresa.setNome(empresa.getNome().toUpperCase());
+		empresaRepository.save(empresa);
 	}
 
 
