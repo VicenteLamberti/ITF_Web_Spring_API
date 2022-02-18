@@ -1,8 +1,14 @@
 package br.com.vicente.itfwebspringapi.form;
 
-public class EmpresaForm {
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+public class EmpresaForm {
+	
+	@NotNull @NotEmpty
 	private String nome;
+	
+	@NotNull @NotEmpty
 	private String cnpj;
 	
 	

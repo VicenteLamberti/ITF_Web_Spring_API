@@ -24,7 +24,7 @@ public class Empresa implements Serializable {
 	private Long id;
 	private String nome;
 	private String cnpj;
-	private Boolean aberta = true;
+	private Boolean aberta = false;
 
 	public Empresa() {
 	}

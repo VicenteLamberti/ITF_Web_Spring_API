@@ -3,6 +3,8 @@ package br.com.vicente.itfwebspringapi.resource;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +45,7 @@ public class EmpresaResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<EmpresaDto> salvar(@RequestBody EmpresaForm formEmpresa, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<EmpresaDto> salvar(@RequestBody @Valid EmpresaForm formEmpresa, UriComponentsBuilder uriBuilder) {
 		Empresa empresa = empresaService.converterParaEmpresa(formEmpresa);
 		
 		empresaService.salvar(empresa);
