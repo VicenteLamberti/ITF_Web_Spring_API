@@ -1,8 +1,10 @@
-package br.com.vicente.itfwebspringapi;
+package br.com.vicente.itfwebspringapi.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ public class EmpresaService {
 	private EmpresaRepository empresaRepository;
 	
 	
-	public List<EmpresaDto> converterToDto(List<Empresa> empresas) {
+	public List<EmpresaDto> converterParaDto(List<Empresa> empresas) {
 		return empresas.stream().map(EmpresaDto::new).collect(Collectors.toList());
 	}
 	
@@ -26,6 +28,10 @@ public class EmpresaService {
 		return empresaRepository.findAll();
 	}
 
+	public Empresa buscarPorId(Long id) {
+		Optional<Empresa> obj = empresaRepository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Empresa.class.getName(),null));
+	}
 
 
 	

@@ -24,6 +24,7 @@ public class Empresa implements Serializable {
 	private Long id;
 	private String nome;
 	private String cnpj;
+	private Boolean aberta;
 
 	public Empresa() {
 	}
@@ -57,6 +58,14 @@ public class Empresa implements Serializable {
 		this.cnpj = cnpj;
 	}
 	
+	public Boolean getAberta() {
+		return aberta;
+	}
+
+	public void setAberta(Boolean aberta) {
+		this.aberta = aberta;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, nome);
@@ -78,6 +87,8 @@ public class Empresa implements Serializable {
 	public String toString() {
 		return "Empresa [id=" + id + ", nome=" + nome + "]";
 	}
+
+	
 
 	
 
