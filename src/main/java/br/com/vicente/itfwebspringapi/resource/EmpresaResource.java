@@ -6,7 +6,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +46,7 @@ public class EmpresaResource {
 		return ResponseEntity.ok().body(new EmpresaDetalhesDto(empresa));
 	}
 	
+	
 	@PostMapping
 	public ResponseEntity<EmpresaDto> salvar(@RequestBody @Valid EmpresaForm formEmpresa, UriComponentsBuilder uriBuilder) {
 		Empresa empresa = empresaService.converterParaEmpresa(formEmpresa);
@@ -52,4 +55,14 @@ public class EmpresaResource {
 		URI uri = uriBuilder.path("/empresa/{id}").buildAndExpand(empresa.getid()).toUri(); 
 		return ResponseEntity.created(uri).body(new EmpresaDto(empresa));
 	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletar(@PathVariable @Valid Long id){
+		
+		empresaService.deletar(id);
+		
+		return new ResponseEntity<>("Empresa deletada",HttpStatus.NO_CONTENT);
+	}
+	
+	
 }

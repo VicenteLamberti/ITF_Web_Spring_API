@@ -18,31 +18,42 @@ public class EmpresaService {
 
 	@Autowired
 	private EmpresaRepository empresaRepository;
-	
-	
+
 	public List<EmpresaDto> converterParaDto(List<Empresa> empresas) {
 		return empresas.stream().map(EmpresaDto::new).collect(Collectors.toList());
 	}
-	
+
 	public Empresa converterParaEmpresa(EmpresaForm empresaForm) {
-		
-		Empresa empresa = new Empresa(empresaForm.getNome(),empresaForm.getCnpj());
+
+		Empresa empresa = new Empresa(empresaForm.getNome(), empresaForm.getCnpj());
 		return empresa;
 	}
-	
-	
-	public List<Empresa> buscar(){
+
+	public List<Empresa> buscar() {
 		return empresaRepository.findAll();
 	}
 
 	public Empresa buscarPorId(Long id) {
-		Optional<Empresa> obj = empresaRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Empresa.class.getName(),null));
+		Optional<Empresa> empresa = empresaRepository.findById(id);
+		return empresa.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Empresa.class.getName(), null));
 	}
-	
+
 	public void salvar(Empresa empresa) {
 		empresa.setNome(empresa.getNome().toUpperCase());
 		empresaRepository.save(empresa);
+	}
+
+	public void deletar (Long id) {
+		Optional<Empresa> empresa = empresaRepository.findById(id);
+		if(empresa.isPresent()) {
+			empresaRepository.delete(empresa.get());
+		}
+		else {
+			throw new ObjectNotFoundException(id, null);
+		}
+		
+		
 	}
 
 
