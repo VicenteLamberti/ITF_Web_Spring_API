@@ -9,7 +9,7 @@ public class EmpresaDto {
 	
 	
 	public EmpresaDto(Empresa empresa) {
-		this.id = empresa.getid();
+		this.id = empresa.getId();
 		this.nome = empresa.getNome();
 	}
 

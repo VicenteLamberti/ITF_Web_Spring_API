@@ -10,7 +10,7 @@ public class EmpresaDetalhesDto {
 	
 	
 	public EmpresaDetalhesDto(Empresa empresa) {
-		this.id = empresa.getid();
+		this.id = empresa.getId();
 		this.nome = empresa.getNome();
 		this.aberta = empresa.getAberta();
 	}

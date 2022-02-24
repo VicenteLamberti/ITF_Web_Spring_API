@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.vicente.itfwebspringapi.dto.EmpresaDto;
+import br.com.vicente.itfwebspringapi.form.EmpresaAlteracaoForm;
 import br.com.vicente.itfwebspringapi.form.EmpresaForm;
 import br.com.vicente.itfwebspringapi.model.Empresa;
 import br.com.vicente.itfwebspringapi.repository.EmpresaRepository;
@@ -19,18 +20,26 @@ public class EmpresaService {
 	@Autowired
 	private EmpresaRepository empresaRepository;
 
-	public List<EmpresaDto> converterParaDto(List<Empresa> empresas) {
+	private List<EmpresaDto> converteEmpresarParaDtos(List<Empresa> empresas) {
 		return empresas.stream().map(EmpresaDto::new).collect(Collectors.toList());
 	}
 
-	public Empresa converterParaEmpresa(EmpresaForm empresaForm) {
+	private Empresa converterEmpresaFormParaEmpresa(EmpresaForm empresaForm) {
 
 		Empresa empresa = new Empresa(empresaForm.getNome(), empresaForm.getCnpj());
 		return empresa;
 	}
 
-	public List<Empresa> buscar() {
-		return empresaRepository.findAll();
+	private Empresa converterEmpresaAlteracaoFormParaEmpresa(Long id, EmpresaAlteracaoForm empresaAlteraracaoForm) {
+		Optional<Empresa> empresa = empresaRepository.findById(id);
+		empresa.get().setNome(empresaAlteraracaoForm.getNome());
+		return empresa.get();
+	}
+
+	public List<EmpresaDto> buscar() {
+		List<Empresa> empresas = empresaRepository.findAll();
+		List<EmpresaDto> empresasDtos = converteEmpresarParaDtos(empresas);
+		return empresasDtos;
 	}
 
 	public Empresa buscarPorId(Long id) {
@@ -39,23 +48,22 @@ public class EmpresaService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Empresa.class.getName(), null));
 	}
 
-	public void salvar(Empresa empresa) {
+	public Empresa salvar(EmpresaForm empresaForm) {
+		Empresa empresa = converterEmpresaFormParaEmpresa(empresaForm);
 		empresa.setNome(empresa.getNome().toUpperCase());
 		empresaRepository.save(empresa);
+		return empresa;
 	}
 
-	public void deletar (Long id) {
+	public void deletar(Long id) {
 		Optional<Empresa> empresa = empresaRepository.findById(id);
-		if(empresa.isPresent()) {
-			empresaRepository.delete(empresa.get());
-		}
-		else {
-			throw new ObjectNotFoundException(id, null);
-		}
-		
-		
+		empresaRepository.delete(empresa.orElseThrow(() -> new RuntimeException()));
 	}
 
+	public Empresa editar(Long id, EmpresaAlteracaoForm empresaAlteraracaoForm) {
+		Empresa empresa = converterEmpresaAlteracaoFormParaEmpresa(id, empresaAlteraracaoForm);
+		empresaRepository.save(empresa);
+		return empresa;
+	}
 
-	
 }
