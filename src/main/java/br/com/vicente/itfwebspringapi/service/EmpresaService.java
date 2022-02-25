@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.vicente.itfwebspringapi.dto.EmpresaDto;
 import br.com.vicente.itfwebspringapi.form.EmpresaAlteracaoForm;
@@ -31,7 +33,10 @@ public class EmpresaService {
 	}
 
 	private Empresa converterEmpresaAlteracaoFormParaEmpresa(Long id, EmpresaAlteracaoForm empresaAlteraracaoForm) {
-		Optional<Empresa> empresa = empresaRepository.findById(id);
+		Optional<Empresa> empresa = Optional.ofNullable(empresaRepository.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException(null,null)));
+		
+
 		empresa.get().setNome(empresaAlteraracaoForm.getNome());
 		return empresa.get();
 	}
@@ -65,5 +70,7 @@ public class EmpresaService {
 		empresaRepository.save(empresa);
 		return empresa;
 	}
+	
+	
 
 }

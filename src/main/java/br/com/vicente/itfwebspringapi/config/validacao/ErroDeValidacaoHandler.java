@@ -2,6 +2,7 @@ package br.com.vicente.itfwebspringapi.config.validacao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +44,8 @@ public class ErroDeValidacaoHandler {
 	public ResponseEntity<?> handle(ObjectNotFoundException exception) {
 		return new ResponseEntity<>("Ocorreu um erro ao tentar realizar operações com esse id!",HttpStatus.NOT_FOUND);
 	}
+	
+//	public ResponseEntity<?> handle(NoSuchElementException exception){
+//		return new ResponswEntity<>("Ocorreu um erro ao real")
+//	}
 }
